@@ -1,0 +1,32 @@
+[
+    {
+        "img": "https://i.ibb.co/Yhjwt48/chemistry-beaker.webp",
+        "title": "Beaker",
+        "price": 550
+    },
+    {
+        "img": "https://i.ibb.co/s5nsbh9/chemistry-magnet.webp",
+        "title": "Magnet",
+        "price": 650
+    },
+    {
+        "img": "https://i.ibb.co/jRVkVvs/civil-bulldozer.webp",
+        "title": "Bulldozer",
+        "price": 300
+    },
+    {
+        "img": "https://i.ibb.co/sqmZMgm/civil-excavator.webp",
+        "title": "Excavator",
+        "price": 280
+    },
+    {
+        "img": "https://i.ibb.co/8KDY8jL/civil-roller.webp",
+        "title": "Roller",
+        "price": 690
+    },
+    {
+        "img": "https://i.ibb.co/DWZgW8L/math-compass.png",
+        "title": "Compass",
+        "price": 580
+    }
+]
