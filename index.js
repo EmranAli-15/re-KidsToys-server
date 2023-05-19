@@ -31,7 +31,21 @@ async function run() {
 
         const toysCollection = client.db('ToyStore').collection('salesToys');
 
-        app.post('/addToy', async(req, res) =>{
+        // get data by category
+        app.get('/categoryToy/:category', async (req, res) => {
+            const category = req.params.category;
+            const filter = { category: category }
+            const result = await toysCollection.find(filter).toArray();
+            res.send(result);
+        })
+        
+        // get all sales toys data
+        app.get('/allToy', async (req, res) => {
+            const result = await toysCollection.find().toArray();
+            res.send(result)
+        })
+
+        app.post('/addToy', async (req, res) => {
             const toyInfo = req.body;
             const result = await toysCollection.insertOne(toyInfo);
             res.send(result);
