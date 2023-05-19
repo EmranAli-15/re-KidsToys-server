@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const port = process.env.PORT || 5000;
 
@@ -31,6 +31,21 @@ async function run() {
 
         const toysCollection = client.db('ToyStore').collection('salesToys');
 
+
+        app.post('/addToy', async (req, res) => {
+            const toyInfo = req.body;
+            const result = await toysCollection.insertOne(toyInfo);
+            res.send(result);
+        })
+
+        // get single document by id
+        app.get('/singleToy/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: new ObjectId(id) };
+            const result = await toysCollection.findOne(query);
+            res.send(result);
+        })
+
         // get data by category
         app.get('/categoryToy/:category', async (req, res) => {
             const category = req.params.category;
@@ -38,18 +53,24 @@ async function run() {
             const result = await toysCollection.find(filter).toArray();
             res.send(result);
         })
-        
+
+        // get data by user email
+        app.get('/userToy', async (req, res) => {
+            let query = {};
+            if (req.query?.email) {
+                query = { email: req.query.email }
+            }
+            const result = await toysCollection.find(query).toArray();
+            res.send(result);
+        })
+
         // get all sales toys data
         app.get('/allToy', async (req, res) => {
             const result = await toysCollection.find().toArray();
             res.send(result)
         })
 
-        app.post('/addToy', async (req, res) => {
-            const toyInfo = req.body;
-            const result = await toysCollection.insertOne(toyInfo);
-            res.send(result);
-        })
+        
 
 
         // Send a ping to confirm a successful connection
