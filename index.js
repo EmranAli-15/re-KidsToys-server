@@ -70,7 +70,30 @@ async function run() {
             res.send(result)
         })
 
-        
+        // update a single document
+        app.put('/updateToy/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updateToy = req.body;
+            const toy = {
+                $set: {
+                    price: updateToy.price,
+                    quantity: updateToy.quantity,
+                    details: updateToy.details
+                }
+            }
+            const result = await toysCollection.updateOne(filter, toy, options);
+            res.send(result);
+        })
+
+        // delete a document
+        app.delete('/deleteToy/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await toysCollection.deleteOne(query);
+            res.send(result);
+        })
 
 
         // Send a ping to confirm a successful connection
