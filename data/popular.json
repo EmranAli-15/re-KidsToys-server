@@ -28,5 +28,15 @@
         "img": "https://i.ibb.co/ZKcv7zW/eng-processor.webp",
         "title": "Processor",
         "price": 580
+    },
+    {
+        "img": "https://i.ibb.co/1sLR55w/math-verniar.jpg",
+        "title": "Vernier Scale",
+        "price": 690
+    },
+    {
+        "img": "https://i.ibb.co/ZKcv7zW/eng-processor.webp",
+        "title": "Processor",
+        "price": 580
     }
 ]

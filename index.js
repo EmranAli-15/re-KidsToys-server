@@ -87,12 +87,21 @@ async function run() {
         })
 
         // get data by user email
-        app.get('/userToy', async (req, res) => {
+        app.get('/userToys', async (req, res) => {
             let query = {};
             if (req.query?.email) {
                 query = { email: req.query.email }
             }
             const result = await toysCollection.find(query).toArray();
+            res.send(result);
+        })
+
+        // sort userToys
+        app.get('/sortToys', async (req, res) => {
+            let query = { email: req.query.email };
+            let sort = req.query.sort;
+            console.log(query, sort);
+            const result = await toysCollection.find(query).sort({ price: sort }).toArray();
             res.send(result);
         })
 
