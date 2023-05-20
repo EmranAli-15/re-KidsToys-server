@@ -1,32 +1,32 @@
 [
     {
-        "img": "https://i.ibb.co/Yhjwt48/chemistry-beaker.webp",
+        "img": "https://i.ibb.co/xDHzSmV/science-beaker.webp",
         "title": "Beaker",
         "price": 550
     },
     {
-        "img": "https://i.ibb.co/s5nsbh9/chemistry-magnet.webp",
+        "img": "https://i.ibb.co/jy20fyt/science-magnet.webp",
         "title": "Magnet",
         "price": 650
     },
     {
-        "img": "https://i.ibb.co/jRVkVvs/civil-bulldozer.webp",
-        "title": "Bulldozer",
+        "img": "https://i.ibb.co/4NBJR89/science-microscope.webp",
+        "title": "Microscope",
         "price": 300
     },
     {
-        "img": "https://i.ibb.co/sqmZMgm/civil-excavator.webp",
-        "title": "Excavator",
+        "img": "https://i.ibb.co/7rWQbm1/eng-currenttester.webp",
+        "title": "Voltage Meter",
         "price": 280
     },
     {
-        "img": "https://i.ibb.co/8KDY8jL/civil-roller.webp",
-        "title": "Roller",
+        "img": "https://i.ibb.co/1sLR55w/math-verniar.jpg",
+        "title": "Vernier Scale",
         "price": 690
     },
     {
-        "img": "https://i.ibb.co/DWZgW8L/math-compass.png",
-        "title": "Compass",
+        "img": "https://i.ibb.co/ZKcv7zW/eng-processor.webp",
+        "title": "Processor",
         "price": 580
     }
 ]
