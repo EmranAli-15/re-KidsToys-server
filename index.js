@@ -31,17 +31,17 @@ async function run() {
 
         const toysCollection = client.db('ToyStore').collection('salesToys');
 
-        
+
         // including search method
         const indexKey = { name: 1 };
         const indexOption = { name: "toyName" };
 
         const result = await toysCollection.createIndex(indexKey, indexOption);
 
-        app.get('/toysSearch/:name', async(req, res) => {
+        app.get('/toysSearch/:name', async (req, res) => {
             const searchToy = req.params.name;
             const result = await toysCollection.find(
-                {name: {$regex: searchToy, $options: 'i'}}
+                { name: { $regex: searchToy, $options: 'i' } }
             ).toArray();
             res.send(result);
         })
@@ -51,6 +51,22 @@ async function run() {
         app.post('/addToy', async (req, res) => {
             const toyInfo = req.body;
             const result = await toysCollection.insertOne(toyInfo);
+            res.send(result);
+        })
+
+        // get total products number
+        app.get('/totalToys', async (req, res) => {
+            const result = await toysCollection.estimatedDocumentCount();
+            res.send({ totalToys: result })
+        })
+
+        // get limited  toy for per page
+        app.get('/toys', async (req, res) => {
+            console.log(req.query);
+            const limit = parseInt(req.query.limit) || 8;
+            const page = parseInt(req.query.page) || 0;
+            const skip = limit * page;
+            const result = await toysCollection.find().skip(skip).limit(limit).toArray();
             res.send(result);
         })
 
