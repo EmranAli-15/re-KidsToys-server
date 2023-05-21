@@ -27,7 +27,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
         const toysCollection = client.db('ToyStore').collection('salesToys');
 
@@ -38,20 +38,10 @@ async function run() {
 
         const result = await toysCollection.createIndex(indexKey, indexOption);
 
-        app.get('/toysSearch/:name', async (req, res) => {
-            const searchToy = req.params.name;
-            const result = await toysCollection.find(
-                { name: { $regex: searchToy, $options: 'i' } }
-            ).toArray();
-            res.send(result);
-        })
-
-
-        // add a document
-        app.post('/addToy', async (req, res) => {
-            const toyInfo = req.body;
-            const result = await toysCollection.insertOne(toyInfo);
-            res.send(result);
+        // get all sales toys data
+        app.get('/allToy', async (req, res) => {
+            const result = await toysCollection.find().toArray();
+            res.send(result)
         })
 
         // get total products number
@@ -60,9 +50,16 @@ async function run() {
             res.send({ totalToys: result })
         })
 
+        app.get('/toysSearch/:name', async (req, res) => {
+            const searchToy = req.params.name;
+            const result = await toysCollection.find(
+                { name: { $regex: searchToy, $options: 'i' } }
+            ).toArray();
+            res.send(result);
+        })
+
         // get limited  toy for per page
         app.get('/toys', async (req, res) => {
-            console.log(req.query);
             const limit = parseInt(req.query.limit) || 8;
             const page = parseInt(req.query.page) || 0;
             const skip = limit * page;
@@ -98,17 +95,20 @@ async function run() {
 
         // sort userToys
         app.get('/sortToys', async (req, res) => {
-            let query = { email: req.query.email };
+            let query = {};
+            if (req.query?.email) {
+                query = { email: req.query.email }
+            };
             let sort = req.query.sort;
-            console.log(query, sort);
             const result = await toysCollection.find(query).sort({ price: sort }).toArray();
             res.send(result);
         })
 
-        // get all sales toys data
-        app.get('/allToy', async (req, res) => {
-            const result = await toysCollection.find().toArray();
-            res.send(result)
+        // add a document
+        app.post('/addToy', async (req, res) => {
+            const toyInfo = req.body;
+            const result = await toysCollection.insertOne(toyInfo);
+            res.send(result);
         })
 
         // update a single document
@@ -142,7 +142,6 @@ async function run() {
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
-        // await client.close();
     }
 }
 run().catch(console.dir);
