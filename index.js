@@ -30,9 +30,9 @@ async function run() {
         const toysCollection = client.db('ToyStore').collection('salesToys');
 
         // including search method
-        const indexKey = { name: 1 };
-        const indexOption = { name: "toyName" };
-        const result = await toysCollection.createIndex(indexKey, indexOption);
+        // const indexKey = { name: 1 };
+        // const indexOption = { name: "toyName" };
+        // const result = await toysCollection.createIndex(indexKey, indexOption);
 
         // get toys by category
         app.get('/categoryToys/:category', async (req, res) => {
