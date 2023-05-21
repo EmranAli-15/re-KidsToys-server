@@ -11,8 +11,6 @@ app.use(express.json());
 const popular = require('./data/popular.json');
 
 
-
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.2b4mnlf.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -31,25 +29,35 @@ async function run() {
 
         const toysCollection = client.db('ToyStore').collection('salesToys');
 
-
         // including search method
         const indexKey = { name: 1 };
         const indexOption = { name: "toyName" };
-
         const result = await toysCollection.createIndex(indexKey, indexOption);
 
-        // get all sales toys data
-        app.get('/allToy', async (req, res) => {
-            const result = await toysCollection.find().toArray();
-            res.send(result)
+        // get toys by category
+        app.get('/categoryToys/:category', async (req, res) => {
+            const category = req.params.category;
+            const filter = { category: category }
+            const result = await toysCollection.find(filter).toArray();
+            res.send(result);
         })
 
-        // get total products number
+        // get total toys number
         app.get('/totalToys', async (req, res) => {
             const result = await toysCollection.estimatedDocumentCount();
             res.send({ totalToys: result })
         })
 
+        // get limited  toy for per page
+        app.get('/toysLimit', async (req, res) => {
+            const limit = parseInt(req.query.limit) || 8;
+            const page = parseInt(req.query.page) || 0;
+            const skip = limit * page;
+            const result = await toysCollection.find().skip(skip).limit(limit).toArray();
+            res.send(result);
+        })
+
+        // search toy by name
         app.get('/toysSearch/:name', async (req, res) => {
             const searchToy = req.params.name;
             const result = await toysCollection.find(
@@ -58,16 +66,7 @@ async function run() {
             res.send(result);
         })
 
-        // get limited  toy for per page
-        app.get('/toys', async (req, res) => {
-            const limit = parseInt(req.query.limit) || 8;
-            const page = parseInt(req.query.page) || 0;
-            const skip = limit * page;
-            const result = await toysCollection.find().skip(skip).limit(limit).toArray();
-            res.send(result);
-        })
-
-        // get single document by id
+        // get single toy by id
         app.get('/singleToy/:id', async (req, res) => {
             const id = req.params.id
             const query = { _id: new ObjectId(id) };
@@ -75,15 +74,7 @@ async function run() {
             res.send(result);
         })
 
-        // get data by category
-        app.get('/categoryToy/:category', async (req, res) => {
-            const category = req.params.category;
-            const filter = { category: category }
-            const result = await toysCollection.find(filter).toArray();
-            res.send(result);
-        })
-
-        // get data by user email
+        // get toys by user email
         app.get('/userToys', async (req, res) => {
             let query = {};
             if (req.query?.email) {
@@ -104,14 +95,14 @@ async function run() {
             res.send(result);
         })
 
-        // add a document
+        // add a toy
         app.post('/addToy', async (req, res) => {
             const toyInfo = req.body;
             const result = await toysCollection.insertOne(toyInfo);
             res.send(result);
         })
 
-        // update a single document
+        // update a single toy
         app.put('/updateToy/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) };
@@ -128,7 +119,7 @@ async function run() {
             res.send(result);
         })
 
-        // delete a document
+        // delete a toy
         app.delete('/deleteToy/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
@@ -136,11 +127,11 @@ async function run() {
             res.send(result);
         })
 
-
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
-    } finally {
+    }
+    finally {
         // Ensures that the client will close when you finish/error
     }
 }
